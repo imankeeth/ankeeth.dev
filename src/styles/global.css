@@ -1,1 +1,76 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design System Colors */
+@theme {
+  /* Dark Background */
+  --color-graphite: #050608;
+  /* Light Background (Warm Gray) */
+  --color-oat: #F5EFE4;
+
+  /* Surface Colors */
+  --color-surface: #0D0F14;
+  --color-surface-light: #FFFFFF;
+
+  /* Border Colors */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-subtle-light: rgba(0, 0, 0, 0.08);
+
+  /* Accent Colors */
+  --color-accent-teal: #14B8A6;
+  --color-accent-orange: #F59E0B;
+  --color-accent-blue: #3B82F6;
+  --color-accent-green: #10B981;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode class application */
+html.dark {
+  color-scheme: dark;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent-teal);
+  color: white;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent-teal);
+  outline-offset: 2px;
+}
+
+/* Remove default link underlines for cleaner look */
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,63 @@
+---
+title: "Opus 4.5 has become my favourite pair-programmer"
+date: "Mar 12, 2025"
+description: "How I orchestrate a swarm of agents using Opus 4.5 as the primary meta-architect."
+tags: ["Agents", "Workflow", "Opus"]
+coverImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop"
+hasAudio: true
+---
+
+I used to think of AI as a tool—a sophisticated hammer I swung at code until it worked. But **Opus 4.5** has shifted that paradigm entirely. It's no longer just a tool; it's my **Agent Cobody**.
+
+In my current stack, Opus 4.5 acts as the primary orchestrator. I don't just ask it to write functions; I ask it to *hire* other agents.
+
+### The Meta-Architect
+I have given Opus the meta-capability to spawn ephemeral sub-agents. When we tackle a complex feature, Opus doesn't just start coding. It breaks the spec down and assigns roles:
+
+1.  **The Planner**: Validates the architecture against existing patterns.
+2.  **The Executor**: Writes the raw implementation.
+3.  **The Critic**: Reviews the code for security and performance anti-patterns.
+
+It looks something like this in my terminal logs:
+
+```bash
+> Opus: Initializing sub-routine [Review_Protocol]
+> Spawning Agent-7 (Model: Sonnet-3.7-Turbo) context: /src/auth
+> Spawning Agent-8 (Model: Haiku-2) context: /docs/api
+> ... Aggregating diffs ...
+> Merge conflict resolved by Orchestrator.
+```
+
+### Context Isolation
+The killer feature is how Opus handles context. It knows that Agent-8 doesn't need to know about the UI components if it's just updating the API documentation. It slices the context window surgically.
+
+Here is a snippet of the orchestration config I use:
+
+```typescript
+interface AgentManifest {
+  role: 'architect' | 'builder' | 'critic';
+  permissions: {
+    filesystem: 'read' | 'write' | 'none';
+    network: boolean;
+  };
+  model_tier: 'opus-4.5' | 'flash-lite' | 'pro';
+}
+
+const spawnAgent = (manifest: AgentManifest, task: string) => {
+  // Opus 4.5 manages this lifecycle internally
+  return system.fork({
+    ...manifest,
+    instruction: task
+  });
+}
+```
+
+### Visualizing the Swarm
+It's hard to explain the feeling of watching 3 different cursors move in your IDE simultaneously, all orchestrated by one central intelligence. 
+
+I built a small visualizer to track these agent states in real-time. You can interact with a simulation of my current workspace below.
+
+### The Result?
+We aren't just shipping faster. We are shipping *denser*. The amount of thought per line of code has increased because Opus forces the sub-agents to debate implementation details before I even see the Pull Request.
+
+It's not perfect—sometimes the agents get into a loop arguing about variable naming conventions—but it's the closest I've felt to living in the future.

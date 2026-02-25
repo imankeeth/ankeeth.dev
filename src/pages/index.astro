@@ -1,16 +1,8 @@
 ---
-import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import Dashboard from "../components/react/Dashboard";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body class="bg-zinc-950 text-zinc-100 min-h-screen flex items-center justify-center">
-		<h1 class="text-4xl font-bold">ankeeth.dev</h1>
-	</body>
-</html>
+<Layout title="ankeeth.dev | Building Intelligent Systems">
+  <Dashboard client:only="react" />
+</Layout>

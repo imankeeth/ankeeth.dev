@@ -1,0 +1,58 @@
+---
+title: "Building Internet Scale Web Services"
+date: "Feb 15, 2024"
+description: "Three simple principles for designing services that survive success: Resiliency, Simplicity, and Automation."
+tags: ["Systems", "Architecture"]
+coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop"
+hasAudio: false
+---
+
+It's the classic problem that most successful web services/apps will deal with: the number of users on your site has exorbitantly increased that things are starting to get bogged down.
+
+Pages loading slowly, network connections starting to time out and your servers are starting to respond slowly under heavy loads. Congratulations — your web app has hit the roof!
+
+But now what? You need to keep everything online and want the UX to be as fast as possible. Bill Hoffman from Microsoft's Windows SkyDrive Storage Team has a set of three simple principles worth considering upfront while starting to design and build service.
+
+## 1. Resilient to failures
+
+A service may crash or be stopped at any time. There will be network failures. Disks will run out of space. Never let a failure pass silently. Handle all failures gracefully. Expect failures.
+
+## 2. Simple is better
+
+> Simple is better than complex.
+> Complex is better than complicated.
+> — Tim Peters, The Zen Of Python
+
+Keep things simple. Complexity breeds problems. Simple things are easier to get right.
+
+## 3. Automate everything
+
+People make mistakes. People need to sleep. People forget things. Automated processes are testable, fixable, and thus being extremely much more reliable. Automate whatever and wherever possible.
+
+---
+
+## The Checklist: Application Design & Development
+
+About 80% of operations issues originate in the design and development phase. When systems fail, there is a natural tendency to look first to operations since that is where the problem actually took place.
+
+- Can the service survive failure without human administrative interaction?
+- Are failure paths frequently tested?
+- Have we documented all conceivable component failure modes and combinations thereof?
+- Does our design tolerate these failure modes?
+- Are we hosting all users on a single version of the software?
+- Can we continue to operate in reduced capacity if services/components you depend on fail?
+- Does our design cut code redundancy across services/components?
+- Can our pods/clusters of services continue to operate independently of each other?
+- Have we avoided single points of failure?
+
+## Operations and Capacity Planning
+
+- Is there a DevOps team that takes shared responsibility for both developing and operating the service?
+- Do we always do soft deletes so that we can recover accidentally deleted data?
+- Are we tracking resource allocation for every service to understand the correlation between service metrics and underlying infrastructure requirements?
+- Do we have a discipline of only making one change at a time?
+- Is everything that might need to be configured or tuned in production able to be changed without a code change?
+
+## Conclusion
+
+Reducing operations costs and improving service reliability for a high scale internet service starts with writing the service to be operations-friendly.
