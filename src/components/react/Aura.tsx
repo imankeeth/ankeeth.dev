@@ -7,6 +7,8 @@ import { SYSTEM_PROMPT } from '../../constants';
 import Panel from './Panel';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
 import BracketLink from './BracketLink';
 
 interface AuraProps {
@@ -74,28 +76,32 @@ const MessageItem = memo(({ msg }: { msg: ExtendedAuraMessage }) => {
                          </div>
                     ) : (
                         <>
-                           <ReactMarkdown
-                                components={{
-                                    p: ({children}) => <p className="mb-2 last:mb-0 leading-relaxed break-words">{children}</p>,
-                                    a: ({href, children}) => <BracketLink href={href}>{children}</BracketLink>,
-                                    ul: ({children}) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
-                                    ol: ({children}) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
-                                    li: ({children}) => <li className="pl-1">{children}</li>,
-                                    code: ({className, children, ...props}) => (
-                                        <code className={`${className} font-mono text-xs bg-gray-200 dark:bg-white/10 px-1 py-0.5 rounded-[1px] text-accent-teal dark:text-accent-teal border border-gray-300 dark:border-white/10`} {...props}>
-                                            {children}
-                                        </code>
-                                    ),
-                                    pre: ({children}) => (
-                                        <pre className="overflow-x-auto my-2 p-3 bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-sm text-gray-600 dark:text-gray-300 [&>code]:bg-transparent [&>code]:p-0 [&>code]:text-inherit [&>code]:border-0 shadow-inner">
-                                            {children}
-                                        </pre>
-                                    ),
-                                    blockquote: ({children}) => <blockquote className="border-l-2 border-accent-teal pl-3 italic text-gray-500 my-2">{children}</blockquote>,
-                                }}
-                            >
-                                {msg.content}
-                            </ReactMarkdown>
+                            <div className="markdown-content markdown-content--sm break-words">
+                                <ReactMarkdown
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeSanitize]}
+                                    components={{
+                                        p: ({children}) => <p className="mb-2 last:mb-0 leading-relaxed break-words">{children}</p>,
+                                        a: ({href, children}) => <BracketLink href={href}>{children}</BracketLink>,
+                                        ul: ({children}) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
+                                        ol: ({children}) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
+                                        li: ({children}) => <li className="pl-1">{children}</li>,
+                                        code: ({className, children, ...props}) => (
+                                            <code className={`${className} font-mono text-xs bg-gray-200 dark:bg-white/10 px-1 py-0.5 rounded-[1px] text-accent-teal dark:text-accent-teal border border-gray-300 dark:border-white/10`} {...props}>
+                                                {children}
+                                            </code>
+                                        ),
+                                        pre: ({children}) => (
+                                            <pre className="overflow-x-auto my-2 p-3 bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-sm text-gray-600 dark:text-gray-300 [&>code]:bg-transparent [&>code]:p-0 [&>code]:text-inherit [&>code]:border-0 shadow-inner">
+                                                {children}
+                                            </pre>
+                                        ),
+                                        blockquote: ({children}) => <blockquote className="border-l-2 border-accent-teal pl-3 italic text-gray-500 my-2">{children}</blockquote>,
+                                    }}
+                                >
+                                    {msg.content}
+                                </ReactMarkdown>
+                            </div>
                             {msg.isStreaming && <span className="inline-block w-1.5 h-3 bg-accent-teal animate-pulse align-middle ml-1" />}
                         </>
                     )}
@@ -175,15 +181,35 @@ const MessageList = memo(({ messages, onSuggestionClick }: { messages: ExtendedA
 
 const InputArea = memo(({ onSend, isThinking }: { onSend: (val: string) => void, isThinking: boolean }) => {
   const [query, setQuery] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const resizeInput = useCallback(() => {
+    const el = inputRef.current;
+    if (!el) return;
+
+    // Autosize from 1 line up to a capped height, then scroll.
+    el.style.height = '0px';
+    const maxHeight = 160;
+    const nextHeight = Math.min(el.scrollHeight, maxHeight);
+    el.style.height = `${nextHeight}px`;
+    el.style.overflowY = el.scrollHeight > maxHeight ? 'auto' : 'hidden';
+  }, []);
 
   // Focus on mount (when Aura opens)
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+    resizeInput();
+  }, [resizeInput]);
+
+  useEffect(() => {
+    resizeInput();
+  }, [query, resizeInput]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleSend();
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   const handleSend = () => {
@@ -198,14 +224,16 @@ const InputArea = memo(({ onSend, isThinking }: { onSend: (val: string) => void,
     <div className="shrink-0 p-4 border-t border-gray-200 dark:border-white/10 bg-gray-50/90 dark:bg-black/40 backdrop-blur-sm">
         <div className="relative flex items-center gap-3">
             <span className="text-accent-teal animate-pulse"><Terminal size={16} /></span>
-            <input
+            <textarea
                 ref={inputRef}
-                type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onInput={resizeInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter command or query..."
-                className="w-full bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none font-mono tracking-tight"
+                rows={1}
+                className="w-full bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 font-mono tracking-tight resize-none border-0 outline-none focus:outline-none focus-visible:outline-none active:outline-none ring-0 focus:ring-0 focus-visible:ring-0 shadow-none focus:shadow-none focus:border-0"
+                style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
                 autoComplete="off"
             />
              <button 

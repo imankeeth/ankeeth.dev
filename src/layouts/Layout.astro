@@ -8,6 +8,7 @@ import Dock from "../components/react/Dock";
 import StatusBar from "../components/react/StatusBar";
 import ThemeTransitionOverlay from "../components/react/ThemeTransitionOverlay";
 import AuraBlob from "../components/react/AuraBlob";
+import ProjectModal from "../components/react/ProjectModal";
 
 interface Props {
   title?: string;
@@ -62,6 +63,9 @@ const currentPath = Astro.url.pathname;
 
     <!-- Floating Aura orb + help bubble + Aura modal -->
     <AuraBlob client:only="react" transition:persist="aura-blob" />
+
+    <!-- Global project intake modal -->
+    <ProjectModal client:only="react" transition:persist="project-modal" />
 
     <!-- Theme sync script -->
     <script>

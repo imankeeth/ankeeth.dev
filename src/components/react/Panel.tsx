@@ -41,12 +41,12 @@ const Panel: React.FC<PanelProps> = ({
       <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle-light dark:border-border-subtle bg-black/[0.02] dark:bg-white/[0.02] shrink-0">
         <div className="flex items-center gap-3 min-w-0">
           {dragHandle}
-          <div className="flex items-baseline gap-2 min-w-0">
-            <h3 className="text-xs font-semibold font-mono tracking-widest text-gray-900 dark:text-gray-100 uppercase truncate">
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="text-xs leading-none font-semibold font-mono tracking-widest text-gray-900 dark:text-gray-100 uppercase truncate">
               {title}
             </h3>
             {subtitle && (
-              <span className="text-[10px] text-gray-500 font-sans truncate max-w-[150px]">
+              <span className="text-[10px] leading-none text-gray-500 font-sans truncate max-w-[150px]">
                 {subtitle}
               </span>
             )}
@@ -71,7 +71,6 @@ const Panel: React.FC<PanelProps> = ({
 };
 
 export default Panel;
-
 
 
 

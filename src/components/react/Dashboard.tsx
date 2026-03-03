@@ -131,17 +131,17 @@ const MissionControlContent = ({
           </div>
 
           <div className="flex flex-wrap gap-2">
+            <div className="px-2 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5">
+              <Target size={10} />
+              <span>Systems_Thinker</span>
+            </div>
             <div className="px-2 py-1 bg-accent-teal/10 border border-accent-teal/20 text-accent-teal text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5">
               <Cpu size={10} />
-              <span>Agentic_Engineering</span>
+              <span>Agentic_Engineer</span>
             </div>
             <div className="px-2 py-1 bg-accent-orange/10 border border-accent-orange/20 text-accent-orange text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5">
               <Zap size={10} />
               <span>MMA_Athlete</span>
-            </div>
-            <div className="px-2 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5">
-              <Target size={10} />
-              <span>Systems_Thinking</span>
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ const MissionControlContent = ({
             <BracketLink href="https://linkedin.com/in/ankeethysuvarna">
               LinkedIn
             </BracketLink>
-            <BracketLink href="https://twitter.com/imankeeth">X_Corp</BracketLink>
+            <BracketLink href="https://twitter.com/imankeeth">X / Twitter</BracketLink>
           </div>
         </div>
       </div>
